@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DreDarkroom</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    
+    body {
+      background: #0a0a0a;
+      color: #f0f0f0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* Slow, subtle animations */
+    @keyframes verySlowBreathe {
+      0%, 100% { opacity: 0.8; }
+      50% { opacity: 1; }
+    }
+    @keyframes subtleFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(6px); }
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      background: rgba(10, 10, 10, 0.98);
+      border-bottom: 2px solid #690000;
+      padding: 16px 32px;
+      z-index: 1000;
+    }
+    .header-content {
+      max-width: 1600px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo-text {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #fff;
+      text-transform: uppercase;
+    }
+    .logo-text span {
+      color: #690000;
+    }
+    nav a {
+      color: #f0f0f0;
+      text-decoration: none;
+      margin: 0 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    nav a:hover {
+      color: #690000;
+    }
+
+    /* Hero */
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.7;
+    }
+    .hero-overlay {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, rgba(105, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.9) 100%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+    }
+    .hero h1 {
+      font-size: 4.5rem;
+      font-weight: 900;
+      letter-spacing: 3px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      color: #fff;
+      text-shadow: 0 4px 20px rgba(105, 0, 0, 0.6);
+      animation: verySlowBreathe 5s ease-in-out infinite;
+    }
+    .hero p {
+      font-size: 1.3rem;
+      color: #690000;
+      font-weight: 600;
+      margin-top: 16px;
+      animation: subtleFloat 4s ease-in-out infinite;
+    }
+    .hero .tagline {
+      font-size: 0.95rem;
+      color: #a0a0a0;
+      margin-top: 20px;
+      font-style: italic;
+    }
+
+    /* Main */
+    main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    /* Section */
+    section {
+      padding: 80px 0;
+      border-top: 1px solid rgba(105, 0, 0, 0.3);
+    }
+    section.dark {
+      background: rgba(105, 0, 0, 0.05);
+      margin: 0 -40px;
+      padding: 80px 40px;
+    }
+    
+    h2 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 40px;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      padding-bottom: 20px;
+    }
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 80px;
+      height: 3px;
+      background: #690000;
+    }
+
+    /* Gallery - Full Resolution */
+    .gallery {
+      display: flex;
+      flex-direction: column;
+      gap: 80px;
+    }
+    .gallery-item {
+      position: relative;
+      background: #1a1a1a;
+      border: 2px solid #690000;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      overflow: hidden;
+    }
+    .gallery-item:hover {
+      border-color: #fff;
+      box-shadow: 0 0 40px rgba(105, 0, 0, 0.5);
+    }
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .gallery-item:hover img {
+      transform: scale(1.02);
+    }
+    .gallery-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(105, 0, 0, 0.95), transparent);
+      padding: 40px 20px 20px;
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .gallery-item:hover .gallery-label {
+      opacity: 1;
+    }
+
+    /* About / Joke Section */
+    .about {
+      max-width: 900px;
+    }
+    .about p {
+      font-size: 1.05rem;
+      color: #d0d0d0;
+      margin-bottom: 24px;
+      line-height: 1.8;
+    }
+    .about strong {
+      color: #fff;
+      font-weight: 700;
+    }
+    .joke-box {
+      background: rgba(105, 0, 0, 0.15);
+      border-left: 4px solid #690000;
+      padding: 24px;
+      margin: 40px 0;
+      border-radius: 2px;
+    }
+    .joke-box p {
+      color: #690000;
+      font-style: italic;
+      margin: 0;
+    }
+
+    /* Stats */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 32px;
+      margin: 60px 0;
+    }
+    .stat {
+      text-align: center;
+      padding: 32px;
+      background: rgba(105, 0, 0, 0.1);
+      border: 1px solid #690000;
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+    .stat:hover {
+      background: rgba(105, 0, 0, 0.2);
+      transform: translateY(-4px);
+    }
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: #690000;
+      margin-bottom: 12px;
+    }
+    .stat-label {
+      font-size: 0.9rem;
+      color: #a0a0a0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    /* CTA Button */
+    .cta-button {
+      display: inline-block;
+      background: #690000;
+      color: #fff;
+      padding: 14px 40px;
+      text-decoration: none;
+      border: 2px solid #690000;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .cta-button:hover {
+      background: transparent;
+      color: #690000;
+    }
+
+    /* Contact */
+    .contact-section {
+      max-width: 600px;
+      text-align: center;
+    }
+    .contact-section p {
+      font-size: 1.1rem;
+      color: #d0d0d0;
+      margin-bottom: 32px;
+    }
+
+    /* Footer */
+    footer {
+      background: rgba(0, 0, 0, 0.9);
+      border-top: 2px solid #690000;
+      padding: 60px 40px;
+      text-align: center;
+      margin-top: 100px;
+    }
+    footer p {
+      color: #a0a0a0;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+    }
+    footer a {
+      color: #690000;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+    footer a:hover {
+      color: #fff;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 3rem;
+      }
+      h2 {
+        font-size: 1.8rem;
+      }
+      nav a {
+        margin: 0 12px;
+        font-size: 0.85rem;
+      }
+      main {
+        padding: 0 24px;
+      }
+      section.dark {
+        margin: 0 -24px;
+        padding: 60px 24px;
+      }
+      .gallery {
+        gap: 60px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="header-content">
+      <div class="logo-text">Dre<span>darkroom</span></div>
+      <nav>
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <img class="hero-bg" alt="" src="DRE_001_urban-geometry.jpg">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>DreDarkroom</h1>
+      <p>urban geometries • light • shadow • print</p>
+      <p class="tagline">for those who appreciate craft, precision, and dark humor</p>
+    </div>
+  </section>
+
+  <main>
+    <!-- About -->
+    <section id="about" class="dark">
+      <div class="about">
+        <h2>About</h2>
+        <p>
+          Each frame is a conversation between light and darkness. Urban landscapes, temporal distortion, 
+          silhouettes that refuse to be forgotten. Developed with the precision of film in the darkroom—
+          every image intentional, every shadow deliberate.
+        </p>
+        <p>
+          This archive exists for people who get it. For streamers with ADHD who appreciate craft. 
+          For gamers who understand that speed and precision matter. For anyone who's ever stared at 
+          a wall at 3 AM and found it beautiful.
+        </p>
+        
+        <div class="joke-box">
+          <p>
+            💡 <strong>Pro tip for visitors:</strong> If you're here because your friend wouldn't shut up 
+            about photography and dragged you to this site, congratulations—you're about to develop some taste. 
+            Speedrunning your way through this gallery doesn't count. Savor the void.
+          </p>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-number">∞</div>
+            <div class="stat-label">Hours in Darkroom</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">1</div>
+            <div class="stat-label">Chill Vibe</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">0</div>
+            <div class="stat-label">Filters (It's Real)</div>
+          </div>
+          <div class="stat">
+            <div class="stat-number">?</div>
+            <div class="stat-label">Next Surprise</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery - Full Resolution, No Cropping -->
+    <section id="work">
+      <h2>Work</h2>
+      <div class="gallery">
+        <div class="gallery-item">
+          <img src="DRE_001_urban-geometry.jpg" alt="Urban Geometry">
+          <div class="gallery-label">DRE_001 • Urban Geometry</div>
+        </div>
+        <div class="gallery-item">
+          <img src="DRE_002_industrial.jpg" alt="Industrial">
+          <div class="gallery-label">DRE_002 • Industrial</div>
+        </div>
+        <div class="gallery-item">
+          <img src="DRE_003_light-trails.jpg" alt="Light Trails">
+          <div class="gallery-label">DRE_003 • Light Trails</div>
+        </div>
+        <div class="gallery-item">
+          <img src="DRE_004_silhouettes.jpg" alt="Silhouettes">
+          <div class="gallery-label">DRE_004 • Silhouettes</div>
+        </div>
+        <div class="gallery-item">
+          <img src="DRE_005_transition.jpg" alt="Sky Transition">
+          <div class="gallery-label">DRE_005 • Transition</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="dark">
+      <div class="contact-section">
+        <h2>Get In Touch</h2>
+        <p>
+          Interested in prints? Custom work? Or just want to roast speedrunners with someone who gets it?
+        </p>
+        <a href="mailto:dre@dredarkroom.com" class="cta-button">Email Me</a>
+        <p style="margin-top: 32px; font-size: 0.95rem;">
+          🎮 <strong>Gaming friends:</strong> Find the Discord link in my Twitch bio. 
+          <a href="https://twitch.tv/dredarkroom" style="color: #690000;">Stream over there.</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; DreDarkroom. All photographs © DreDarkroom. All Rights Reserved.</p>
+    <p>No filters. No AI. Just light, darkness, and time.</p>
+    <p style="margin-top: 24px; font-size: 0.85rem; color: #690000;">
+      <strong>For Dashhole:</strong> Yes, we know speedrunning the gallery doesn't count. 
+      Come back when you've actually appreciated something.
+    </p>
+  </footer>
+
+  <script>
+    // Smooth scroll for nav
+    document.querySelectorAll('nav a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+  </script>
+
+</body>
+</html>
